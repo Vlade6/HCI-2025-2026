@@ -29,6 +29,9 @@
 - Link to Assignment 3: [**Assignment 3**](URL_TO_ASSIGNMENT_3) <!-- Replace with actual URL -->
 <!-- Add more assignments as necessary -->
 
+### Semester Documents
+- Link to Document 1: [Summary of my idea](https://fesb.gitbook.io/fesb-docs/)
+
 ## Project Requirements
 
 ### Web Application Requirements
