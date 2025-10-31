@@ -25,12 +25,13 @@
 ### Semester Assignments
 
 - Link to Assignment 1: [Idea Pitch](https://github.com/Vlade6/HCI-2025-2026/blob/main/PITSTOP.mp4) <!-- Replace with actual URL -->
-- Link to Assignment 2: [**Assignment 2**](URL_TO_ASSIGNMENT_2) <!-- Replace with actual URL -->
+- Link to Assignment 2: [User personas and information architecture](https://fesb.gitbook.io/fesb-docs/user-personas-and-information-architecture)
 - Link to Assignment 3: [**Assignment 3**](URL_TO_ASSIGNMENT_3) <!-- Replace with actual URL -->
 <!-- Add more assignments as necessary -->
 
 ### Semester Documents
 - Link to Document 1: [Summary of my idea](https://fesb.gitbook.io/fesb-docs/)
+- Link to Document 2: [User personas and information architecture](https://fesb.gitbook.io/fesb-docs/user-personas-and-information-architecture)
 
 ## Project Requirements
 
