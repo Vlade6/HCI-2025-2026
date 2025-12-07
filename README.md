@@ -27,6 +27,7 @@
 - Link to Assignment 1: [Idea Pitch](https://github.com/Vlade6/HCI-2025-2026/blob/main/PITSTOP.mp4) <!-- Replace with actual URL -->
 - Link to Assignment 2: [User personas and information architecture](https://fesb.gitbook.io/fesb-docs/user-personas-and-information-architecture)
 - Link to Assignment 3: [Next.js - Deploying Application](https://pitstop-ivory.vercel.app/) <!-- Replace with actual URL -->
+- Link to Assignment 4: [Low High fidelity prototype](https://github.com/Vlade6/HCI-2025-2026/blob/main/Low%20High%20fidelity%20prototype.docx)
 <!-- Add more assignments as necessary -->
 
 ### Semester Documents
