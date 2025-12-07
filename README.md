@@ -32,6 +32,7 @@
 ### Semester Documents
 - Link to Document 1: [Summary of my idea](https://fesb.gitbook.io/fesb-docs/)
 - Link to Document 2: [User personas and information architecture](https://fesb.gitbook.io/fesb-docs/user-personas-and-information-architecture)
+- Link to Document 3: [Low High fidelity prototype](https://github.com/Vlade6/HCI-2025-2026/blob/main/Low%20High%20fidelity%20prototype.docx)
 
 ## Project Requirements
 
