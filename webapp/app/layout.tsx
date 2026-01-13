@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Navigation } from "./_components/navigation";
+import Navigation from "./_components/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +30,7 @@ export default function RootLayout({
       >
         <Navigation />
 
-        <main className="pt-20 max-w-6xl mx-auto px-4">{children}</main>
+        <main className="w-full">{children}</main>
       </body>
     </html>
   );

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* =========================
+   THEME (NE DIRATI)
+   ========================= */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,6 +22,26 @@
   }
 }
 
+/* =========================
+   RESET (OVO JE FALILO)
+   ========================= */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* bitno za full-width */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* =========================
+   BODY (TVOJ KOD, OK)
+   ========================= */
 body {
   background: var(--background);
   color: var(--foreground);
