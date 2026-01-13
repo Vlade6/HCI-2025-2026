@@ -1,0 +1,7 @@
+node_modules/
+webapp/node_modules/
+.next/
+webapp/.next/
+.env
+.env.local
+.vercel/
