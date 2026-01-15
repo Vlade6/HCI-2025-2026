@@ -1,26 +1,28 @@
-import axios from 'axios';
+// webapp/app/lib/strapi.ts
+import axios from "axios";
 
-const STRAPI_API_URL = 'http://localhost:1337/api'; // Provjeri URL svog Strapi servera
+const STRAPI_BASE =
+  process.env.NEXT_PUBLIC_STRAPI_URL?.replace(/\/$/, "") || "http://localhost:1337";
+const STRAPI_API_URL = `${STRAPI_BASE}/api`;
 
-// Funkcija za dohvat svih postova
 export async function fetchBlogPosts() {
   try {
-    const response = await axios.get(`${STRAPI_API_URL}/blog-posts`);
-    return response.data.data;
-  } catch (error) {
-    console.error('Error fetching blog posts:', error);
+    const res = await axios.get(`${STRAPI_API_URL}/blog-posts`);
+    return res.data.data ?? [];
+  } catch (e) {
+    console.error("fetchBlogPosts error:", e);
     return [];
   }
 }
 
-// Funkcija za dohvat jednog posta prema slugu
 export async function fetchBlogPostBySlug(slug: string) {
   try {
-    const response = await axios.get(`${STRAPI_API_URL}/blog-posts?filters[slug][$eq]=${slug}`);
-    return response.data.data[0]; // Vraća prvi post sa tim slugom
-  } catch (error) {
-    console.error('Error fetching blog post:', error);
+    const res = await axios.get(
+      `${STRAPI_API_URL}/blog-posts?filters[slug][$eq]=${encodeURIComponent(slug)}`
+    );
+    return res.data.data?.[0] ?? null;
+  } catch (e) {
+    console.error("fetchBlogPostBySlug error:", e);
     return null;
   }
 }
- 

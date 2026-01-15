@@ -9,11 +9,7 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": false
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "title": {
       "type": "string",
@@ -44,6 +40,15 @@
     },
     "date": {
       "type": "date"
+    },
+    "videoUrl": {
+      "type": "string"
+    },
+    "codeSnippet": {
+      "type": "text"
+    },
+    "codeLanguage": {
+      "type": "string"
     }
   }
 }

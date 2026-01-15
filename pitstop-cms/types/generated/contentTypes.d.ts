@@ -477,13 +477,10 @@ export interface ApiBlogPostBlogPost extends Struct.CollectionTypeSchema {
   options: {
     draftAndPublish: false;
   };
-  pluginOptions: {
-    i18n: {
-      localized: false;
-    };
-  };
   attributes: {
     category: Schema.Attribute.String;
+    codeLanguage: Schema.Attribute.String;
+    codeSnippet: Schema.Attribute.Text;
     content: Schema.Attribute.Blocks;
     coverImage: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
@@ -504,6 +501,7 @@ export interface ApiBlogPostBlogPost extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    videoUrl: Schema.Attribute.String;
   };
 }
 
