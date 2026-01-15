@@ -30,7 +30,7 @@ export default function RootLayout({
       >
         <Navigation />
 
-        <main className="w-full">{children}</main>
+     <main className="w-full pt-[80px]">{children}</main>
       </body>
     </html>
   );
