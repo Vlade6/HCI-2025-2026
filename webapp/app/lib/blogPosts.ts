@@ -21,12 +21,12 @@ export type BlogPost = {
   updatedAt?: string;
   publishedAt?: string;
 
-  // NEW FIELDS (on the post itself)
+  
   videoUrl?: string;
   codeSnippet?: string;
   codeLanguage?: string;
 
-  // Cover image (separate object)
+  
   coverImage?: {
     url: string;
     alternativeText?: string;
@@ -36,9 +36,6 @@ export type BlogPost = {
 };
 
 
-// IMPORTANT:
-// .env.local MUST be inside /webapp folder
-// NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
 const STRAPI_BASE =
   process.env.NEXT_PUBLIC_STRAPI_URL?.replace(/\/$/, "") || "http://localhost:1337";
 

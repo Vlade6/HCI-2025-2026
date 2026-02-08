@@ -26,7 +26,6 @@ const url =
 
 
 
-
   const res = await fetch(url, {
     headers: { Authorization: `Bearer ${jwt}` },
     cache: "no-store",
@@ -35,10 +34,7 @@ const url =
   const json = await res.json();
   if (!res.ok) return [];
 
-  // Strapi v4: { data: [{ id, attributes: {...}}]}
-  // Ako si ti napravio custom output bez attributes, reci pa prilagodimo.
  const data = (json?.data ?? []).map((x: any) => {
-  // podrži oba formata: flat i attributes
   const attrs = x.attributes ?? x;
   return { id: x.id, ...attrs };
 });
@@ -47,7 +43,6 @@ return data as Booking[];
 }
 
 export default async function MyAccountPage() {
-  // Next 15: cookies() je async u server komponentama
   const cookieStore = await cookies();
   const jwt = cookieStore.get("pitstop_jwt")?.value;
 

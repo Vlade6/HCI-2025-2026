@@ -4,9 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { fetchBlogPostBySlug } from "../../lib/blogPosts";
 
-/**
- * Helper: converts YouTube URL to embed URL
- */
+
 function getYoutubeEmbedUrl(url: string) {
   try {
     const u = new URL(url);
@@ -34,7 +32,7 @@ type PageProps = {
 };
 
 export default async function BlogPostPage({ params }: PageProps) {
-  // IMPORTANT: params is a Promise
+ 
   const { slug } = await params;
 
   const post = await fetchBlogPostBySlug(slug);

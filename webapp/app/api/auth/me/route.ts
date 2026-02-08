@@ -12,7 +12,6 @@ export async function GET() {
     const user = await strapiMe(jwt);
     return NextResponse.json({ ok: true, user });
   } catch {
-    // ako je token nevažeći, očisti cookie
     const res = NextResponse.json({ ok: true, user: null });
     res.cookies.delete("pitstop_jwt");
     return res;
