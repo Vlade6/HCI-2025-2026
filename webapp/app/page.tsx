@@ -87,50 +87,55 @@ export default function Home() {
           </div>
 
           <div className="mt-14 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-2xl bg-white p-8 text-center shadow-lg">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-500">
-                ⏱️
-              </div>
-              <h3 className="mt-6 text-lg font-bold text-black">Fast Service</h3>
-              <p className="mt-3 text-sm leading-6 text-gray-600">
-                Get your car washed quickly without compromising on quality. Most
-                services completed in under 30 minutes.
-              </p>
-            </div>
+  {/* Fast Service */}
+  <div className="rounded-2xl bg-white p-8 text-center shadow-lg">
+    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-500">
+      <i className="fa-solid fa-clock"></i>
+    </div>
+    <h3 className="mt-6 text-lg font-bold text-black">Fast Service</h3>
+    <p className="mt-3 text-sm leading-6 text-gray-600">
+      Get your car washed quickly without compromising on quality. Most
+      services completed in under 30 minutes.
+    </p>
+  </div>
 
-            <div className="rounded-2xl bg-white p-8 text-center shadow-lg">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-500">
-                🏷️
-              </div>
-              <h3 className="mt-6 text-lg font-bold text-black">Affordable Pricing</h3>
-              <p className="mt-3 text-sm leading-6 text-gray-600">
-                Transparent pricing with no hidden fees. Premium quality at prices
-                that won't break the bank.
-              </p>
-            </div>
+  {/* Affordable Pricing */}
+  <div className="rounded-2xl bg-white p-8 text-center shadow-lg">
+    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-500">
+      <i className="fa-solid fa-tag"></i>
+    </div>
+    <h3 className="mt-6 text-lg font-bold text-black">Affordable Pricing</h3>
+    <p className="mt-3 text-sm leading-6 text-gray-600">
+      Transparent pricing with no hidden fees. Premium quality at prices
+      that won't break the bank.
+    </p>
+  </div>
 
-            <div className="rounded-2xl bg-white p-8 text-center shadow-lg">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-500">
-                👤✅
-              </div>
-              <h3 className="mt-6 text-lg font-bold text-black">Professional Team</h3>
-              <p className="mt-3 text-sm leading-6 text-gray-600">
-                Trained and experienced detailers who treat your car with care and
-                precision.
-              </p>
-            </div>
+  {/* Professional Team */}
+  <div className="rounded-2xl bg-white p-8 text-center shadow-lg">
+    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-500">
+      <i className="fa-solid fa-user-check"></i>
+    </div>
+    <h3 className="mt-6 text-lg font-bold text-black">Professional Team</h3>
+    <p className="mt-3 text-sm leading-6 text-gray-600">
+      Trained and experienced detailers who treat your car with care and
+      precision.
+    </p>
+  </div>
 
-            <div className="rounded-2xl bg-white p-8 text-center shadow-lg">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-500">
-                📅
-              </div>
-              <h3 className="mt-6 text-lg font-bold text-black">Easy Booking</h3>
-              <p className="mt-3 text-sm leading-6 text-gray-600">
-                Book online in seconds with real-time availability. No more back-and-forth
-                messaging.
-              </p>
-            </div>
-          </div>
+  {/* Easy Booking */}
+  <div className="rounded-2xl bg-white p-8 text-center shadow-lg">
+    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-500">
+      <i className="fa-solid fa-calendar-check"></i>
+    </div>
+    <h3 className="mt-6 text-lg font-bold text-black">Easy Booking</h3>
+    <p className="mt-3 text-sm leading-6 text-gray-600">
+      Book online in seconds with real-time availability. No more back-and-forth
+      messaging.
+    </p>
+  </div>
+</div>
+
 
           <div className="mt-12 flex flex-col items-center justify-center gap-4">
             <a
@@ -151,63 +156,63 @@ export default function Home() {
     <div className="grid items-center gap-12 lg:grid-cols-2">
       {/* LEFT */}
       <div>
-        <h2 className="text-5xl font-extrabold text-black">
-          Visit Us <span className="text-red-500">Today</span>
-        </h2>
+  <h2 className="text-5xl font-extrabold text-black">
+    Visit Us <span className="text-red-500">Today</span>
+  </h2>
 
-        <p className="mt-4 max-w-xl text-gray-600">
-          We're here to make your car shine. Drop by or book online for a
-          hassle-free experience.
-        </p>
+  <p className="mt-4 max-w-xl text-gray-600">
+    We're here to make your car shine. Drop by or book online for a
+    hassle-free experience.
+  </p>
 
-        <div className="mt-10 space-y-6">
-          {/* Address */}
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100 text-xl">
-              📍
-            </div>
-            <div>
-              <div className="font-bold text-black">Address</div>
-              <div className="text-gray-600">Ostravska 7C, Split, Croatia</div>
-            </div>
-          </div>
-
-          {/* Phone */}
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100 text-xl">
-              📞
-            </div>
-            <div>
-              <div className="font-bold text-black">Phone</div>
-              <div className="text-gray-600">+385 91 234 5678</div>
-            </div>
-          </div>
-
-          {/* Email */}
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100 text-xl">
-              ✉️
-            </div>
-            <div>
-              <div className="font-bold text-black">Email</div>
-              <div className="text-gray-600">pitstop.split@gmail.com</div>
-            </div>
-          </div>
-
-          {/* Working Hours */}
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100 text-xl">
-              🕒
-            </div>
-            <div>
-              <div className="font-bold text-black">Working Hours</div>
-              <div className="text-gray-600">Monday - Friday: 8:00 AM - 6:00 PM</div>
-              <div className="text-gray-600">Saturday: 9:00 AM - 5:00 PM</div>
-              <div className="text-gray-600">Sunday: 10:00 AM - 4:00 PM</div>
-            </div>
-          </div>
-        </div>
+  <div className="mt-10 space-y-6">
+    {/* Address */}
+    <div className="flex items-start gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100 text-xl text-red-500">
+        <i className="fa-solid fa-location-dot"></i>
       </div>
+      <div>
+        <div className="font-bold text-black">Address</div>
+        <div className="text-gray-600">Ostravska 7C, Split, Croatia</div>
+      </div>
+    </div>
+
+    {/* Phone */}
+    <div className="flex items-start gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100 text-xl text-red-500">
+        <i className="fa-solid fa-phone"></i>
+      </div>
+      <div>
+        <div className="font-bold text-black">Phone</div>
+        <div className="text-gray-600">+385 91 234 5678</div>
+      </div>
+    </div>
+
+    {/* Email */}
+    <div className="flex items-start gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100 text-xl text-red-500">
+        <i className="fa-solid fa-envelope"></i>
+      </div>
+      <div>
+        <div className="font-bold text-black">Email</div>
+        <div className="text-gray-600">pitstop.split@gmail.com</div>
+      </div>
+    </div>
+
+    {/* Working Hours */}
+    <div className="flex items-start gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100 text-xl text-red-500">
+        <i className="fa-solid fa-clock"></i>
+      </div>
+      <div>
+        <div className="font-bold text-black">Working Hours</div>
+        <div className="text-gray-600">Monday - Friday: 8:00 AM - 6:00 PM</div>
+        <div className="text-gray-600">Saturday: 9:00 AM - 5:00 PM</div>
+        <div className="text-gray-600">Sunday: 10:00 AM - 4:00 PM</div>
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* RIGHT */}
       <div className="relative">
@@ -240,7 +245,7 @@ export default function Home() {
       {/* LOGO + DESCRIPTION */}
       <div>
         <div className="flex items-center gap-3 text-2xl font-extrabold">
-          <span className="text-red-500">🚗</span>
+         
           PITSTOP
         </div>
 
@@ -286,22 +291,23 @@ export default function Home() {
 
       {/* CONTACT INFO */}
       <div>
-        <h4 className="text-lg font-semibold">Contact Info</h4>
-        <ul className="mt-4 space-y-4 text-sm text-white/70">
-          <li className="flex items-center gap-3">
-            <span className="text-red-500">📍</span>
-            Ostravska 7C, Split, Croatia
-          </li>
-          <li className="flex items-center gap-3">
-            <span className="text-red-500">📞</span>
-            +385 91 234 5678
-          </li>
-          <li className="flex items-center gap-3">
-            <span className="text-red-500">✉️</span>
-            pitstop.split@gmail.com
-          </li>
-        </ul>
-      </div>
+  <h4 className="text-lg font-semibold">Contact Info</h4>
+  <ul className="mt-4 space-y-4 text-sm text-white/70">
+    <li className="flex items-center gap-3">
+      <i className="fa-solid fa-location-dot text-red-500 fa-fw"></i>
+      Ostravska 7C, Split, Croatia
+    </li>
+    <li className="flex items-center gap-3">
+      <i className="fa-solid fa-phone text-red-500 fa-fw"></i>
+      +385 91 234 5678
+    </li>
+    <li className="flex items-center gap-3">
+      <i className="fa-solid fa-envelope text-red-500 fa-fw"></i>
+      pitstop.split@gmail.com
+    </li>
+  </ul>
+</div>
+
     </div>
 
     {/* COPYRIGHT */}

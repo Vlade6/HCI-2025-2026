@@ -1,25 +1,92 @@
-import {
-  User,
-  Calendar,
-  Clock,
-  Car,
-  BadgeCheck,
-  XCircle,
-} from "lucide-react";
+// webapp/app/my_acc/page.tsx
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { STRAPI_URL, strapiMe } from "@/app/lib/strapiAuth";
+import { User, Calendar, Clock, Car, BadgeCheck } from "lucide-react";
 
-export default function MyAccountPage() {
+type Booking = {
+  id: number;
+  serviceName: string;
+  price: number;
+  bookingStatus: "upcoming" | "completed" | "cancelled";
+  date: string;
+  time: string;
+  carModel: string;
+  plate: string;
+};
+
+async function fetchMyBookings(jwt: string): Promise<Booking[]> {
+  // prvo dohvati user id
+  const me = await strapiMe(jwt);
+
+  // filtriraj po user id (Strapi REST filter)
+const url =
+  `${STRAPI_URL}/api/bookings?filters[customer][id][$eq]=${me.id}&sort[0]=date:desc`;
+
+
+
+
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${jwt}` },
+    cache: "no-store",
+  });
+
+  const json = await res.json();
+  if (!res.ok) return [];
+
+  // Strapi v4: { data: [{ id, attributes: {...}}]}
+  // Ako si ti napravio custom output bez attributes, reci pa prilagodimo.
+ const data = (json?.data ?? []).map((x: any) => {
+  // podrži oba formata: flat i attributes
+  const attrs = x.attributes ?? x;
+  return { id: x.id, ...attrs };
+});
+
+return data as Booking[];
+}
+
+export default async function MyAccountPage() {
+  // Next 15: cookies() je async u server komponentama
+  const cookieStore = await cookies();
+  const jwt = cookieStore.get("pitstop_jwt")?.value;
+
+  if (!jwt) {
+    redirect("/login?next=/my_acc");
+  }
+
+  const me = await strapiMe(jwt);
+  const bookings = await fetchMyBookings(jwt);
+
+  const upcoming = bookings.filter((b) => b.bookingStatus === "upcoming");
+  const completed = bookings.filter((b) => b.bookingStatus === "completed");
+
   return (
     <main className="bg-red-50 py-20">
       <div className="max-w-6xl mx-auto px-4">
-        {/* Title */}
-        <h1 className="text-4xl font-bold text-center mb-12">
-          My <span className="text-red-600">Account</span>
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-bold text-center mb-12">
+            My <span className="text-red-600">Account</span>
+          </h1>
+
+          <form
+            action={async () => {
+              "use server";
+              // logout server-side (cookie clear)
+              const c = await cookies();
+              c.set("pitstop_jwt", "", { path: "/", maxAge: 0 });
+              redirect("/login");
+            }}
+          >
+          <button type="submit" className="rounded-lg bg-gray-900 px-4 py-2 text-white">
+            Log out
+          </button> 
+          </form>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* LEFT COLUMN */}
+          {/* LEFT */}
           <div className="space-y-6">
-            {/* Profile */}
             <div className="bg-white rounded-2xl shadow p-6">
               <div className="flex justify-center mb-6">
                 <div className="bg-red-600 text-white rounded-full p-4">
@@ -33,10 +100,10 @@ export default function MyAccountPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium">Full Name</label>
+                  <label className="text-sm font-medium">Username</label>
                   <input
                     className="w-full border rounded-lg px-3 py-2 mt-1"
-                    value="John Doe"
+                    value={me.username}
                     readOnly
                   />
                 </div>
@@ -45,110 +112,73 @@ export default function MyAccountPage() {
                   <label className="text-sm font-medium">Email Address</label>
                   <input
                     className="w-full border rounded-lg px-3 py-2 mt-1"
-                    value="john.doe@example.com"
+                    value={me.email}
                     readOnly
                   />
                 </div>
 
-                <div>
-                  <label className="text-sm font-medium">Phone Number</label>
-                  <input
-                    className="w-full border rounded-lg px-3 py-2 mt-1"
-                    value="(555) 123-4567"
-                    readOnly
-                  />
-                </div>
-
-                <button className="w-full bg-red-600 text-white py-2 rounded-lg mt-4">
-                  Edit Profile
-                </button>
+                <Link
+                  href="/book_wash"
+                  className="block w-full bg-red-600 text-center text-white py-2 rounded-lg mt-4 font-semibold"
+                >
+                  Book a wash
+                </Link>
               </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN */}
+          {/* RIGHT */}
           <div className="lg:col-span-2 bg-white rounded-2xl shadow p-6">
             <h2 className="text-xl font-semibold mb-6">Booking History</h2>
 
-            {/* UPCOMING */}
-            <div className="border border-green-300 bg-green-50 rounded-xl p-5 mb-6">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-xs bg-green-500 text-white px-3 py-1 rounded-full">
-                  UPCOMING
-                </span>
-                <span className="text-xl font-bold text-red-600">$45</span>
+            {upcoming.map((b) => (
+              <div key={b.id} className="border border-green-300 bg-green-50 rounded-xl p-5 mb-6">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-xs bg-green-500 text-white px-3 py-1 rounded-full">
+                    UPCOMING
+                  </span>
+                  <span className="text-xl font-bold text-red-600">€{b.price}</span>
+                </div>
+
+                <h3 className="font-semibold mb-3">{b.serviceName}</h3>
+
+                <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 mb-4">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={16} /> {b.date}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock size={16} /> {b.time}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Car size={16} /> {b.carModel}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <BadgeCheck size={16} /> {b.plate}
+                  </div>
+                </div>
               </div>
+            ))}
 
-              <h3 className="font-semibold mb-3">Premium Wash</h3>
-
-              <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 mb-4">
-                <div className="flex items-center gap-2">
-                  <Calendar size={16} /> November 20, 2025
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock size={16} /> 10:30 AM
-                </div>
-                <div className="flex items-center gap-2">
-                  <Car size={16} /> Toyota Camry
-                </div>
-                <div className="flex items-center gap-2">
-                  <BadgeCheck size={16} /> ABC-1234
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <button className="flex-1 bg-red-600 text-white py-2 rounded-lg">
-                  View Details
-                </button>
-                <button className="flex-1 bg-gray-500 text-white py-2 rounded-lg">
-                  Cancel Booking
-                </button>
-              </div>
-            </div>
-
-            {/* COMPLETED BOOKINGS */}
-            {[
-              {
-                service: "Full Detailing",
-                price: "$120",
-                date: "October 15, 2025",
-                time: "02:00 PM",
-              },
-              {
-                service: "Basic Wash",
-                price: "$25",
-                date: "September 22, 2025",
-                time: "09:00 AM",
-              },
-              {
-                service: "Premium Wash",
-                price: "$45",
-                date: "August 10, 2025",
-                time: "03:00 PM",
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="border rounded-xl p-5 mb-4 bg-white"
-              >
+            {completed.map((b) => (
+              <div key={b.id} className="border rounded-xl p-5 mb-4 bg-white">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs bg-gray-400 text-white px-3 py-1 rounded-full">
                     COMPLETED
                   </span>
-                  <span className="text-lg font-semibold">{item.price}</span>
+                  <span className="text-lg font-semibold">€{b.price}</span>
                 </div>
 
-                <h3 className="font-semibold mb-3">{item.service}</h3>
+                <h3 className="font-semibold mb-3">{b.serviceName}</h3>
 
                 <div className="grid grid-cols-2 gap-3 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
-                    <Calendar size={16} /> {item.date}
+                    <Calendar size={16} /> {b.date}
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock size={16} /> {item.time}
+                    <Clock size={16} /> {b.time}
                   </div>
                   <div className="flex items-center gap-2">
-                    <Car size={16} /> Toyota Camry
+                    <Car size={16} /> {b.carModel}
                   </div>
                   <div className="flex items-center gap-2 text-green-600">
                     <BadgeCheck size={16} /> Service Complete
@@ -156,6 +186,10 @@ export default function MyAccountPage() {
                 </div>
               </div>
             ))}
+
+            {bookings.length === 0 && (
+              <p className="text-gray-600">No bookings yet.</p>
+            )}
           </div>
         </div>
       </div>

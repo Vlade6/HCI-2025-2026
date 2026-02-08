@@ -102,7 +102,7 @@ export default function ContactPage() {
 
           <div className="flex justify-center">
             <a
-              href="https://www.instagram.com/"
+              href="https://www.instagram.com/pitstop_split/"
               target="_blank"
               rel="noreferrer"
               className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-200 text-xl"

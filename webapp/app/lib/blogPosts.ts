@@ -57,7 +57,9 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
     log("STRAPI_BASE:", STRAPI_BASE);
     log("fetchBlogPosts URL:", url);
 
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, {
+  next: { revalidate: 60 }, // cache 60 sekundi
+});
 
     log("fetchBlogPosts STATUS:", res.status);
 
@@ -83,7 +85,9 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null
     log("fetchBlogPostBySlug slug:", slug);
     log("fetchBlogPostBySlug URL:", url);
 
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, {
+  next: { revalidate: 60 }, // cache 60 sekundi
+});
 
     log("fetchBlogPostBySlug STATUS:", res.status);
 

@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/lib/useAuth";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -34,26 +35,36 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 export default function Navigation() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const { user, loading, logout } = useAuth();
 
   useEffect(() => setOpen(false), [pathname]);
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname?.startsWith(href));
 
+  const accountHref = user ? "/my_acc" : "/login";
+
+  const onLogout = async () => {
+    await logout();
+    router.push("/");
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white">
       <div className="mx-auto max-w-7xl px-4">
         <div className="h-[80px] flex items-center justify-between">
-          {/* Logo (samo slika) */}
+          {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
-            <Image
-              src="/logo.jpg"              // stavi logo u /public/logo.png
-              alt="PITSTOP"
-              width={170}
-              height={60}
-              priority
-              className="h-[52px] w-auto"
-            />
+<Image
+  src="/logo.jpg"
+  alt="PITSTOP"
+  width={170}
+  height={60}
+  priority
+  className="h-[52px] w-auto scale-150 origin-left"
+/>
           </Link>
 
           {/* Desktop nav */}
@@ -70,18 +81,42 @@ export default function Navigation() {
               </Link>
             ))}
 
-            <Link
-              href="/my_acc"
-              className="ml-2 rounded-full bg-red-600 px-6 py-3 font-bold text-white hover:bg-red-700 transition"
-            >
-              My Account
-            </Link>
+            {/* Auth area */}
+            <div className="flex items-center gap-4">
+              {!loading && user && (
+                <span className="text-sm font-semibold text-gray-700">Bok, {user.username}</span>
+              )}
+
+              {!loading && !user ? (
+                <Link
+                  href="/login"
+                  className="rounded-full border border-gray-300 px-5 py-2 font-bold text-gray-800 hover:bg-gray-50 transition"
+                >
+                  Login
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="rounded-full border border-gray-300 px-5 py-2 font-bold text-gray-800 hover:bg-gray-50 transition"
+                >
+                  Logout
+                </button>
+              )}
+
+              <Link
+                href={accountHref}
+                className="ml-2 rounded-full bg-red-600 px-6 py-3 font-bold text-white hover:bg-red-700 transition"
+              >
+                My Account
+              </Link>
+            </div>
           </nav>
 
           {/* Mobile controls */}
           <div className="md:hidden flex items-center gap-3">
             <Link
-              href="/my_acc"
+              href={accountHref}
               className="rounded-full bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 transition"
             >
               My Account
@@ -115,6 +150,30 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Mobile auth */}
+            <div className="mt-2 flex flex-col gap-2 border-t pt-3">
+              {!loading && user && (
+                <div className="px-3 text-sm font-semibold text-gray-700">Bok, {user.username}</div>
+              )}
+
+              {!loading && !user ? (
+                <Link
+                  href="/login"
+                  className="rounded-lg px-3 py-3 font-semibold text-gray-800 hover:bg-gray-50"
+                >
+                  Login
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="text-left rounded-lg px-3 py-3 font-semibold text-gray-800 hover:bg-gray-50"
+                >
+                  Logout
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

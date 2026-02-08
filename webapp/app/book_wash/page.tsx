@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { BookIcon } from "lucide-react";
 
 type Service = {
   id: string;
@@ -81,6 +83,8 @@ function StepLine({ active }: { active: boolean }) {
 }
 
 export default function BookWashPage() {
+  const router = useRouter();
+
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
 
   const [serviceId, setServiceId] = useState<string>("");
@@ -89,9 +93,10 @@ export default function BookWashPage() {
   const [carMake, setCarMake] = useState<string>("");
   const [carModel, setCarModel] = useState<string>("");
   const [plate, setPlate] = useState<string>("");
-  const [notes, setNotes] = useState<string>("");
 
   const [confirmed, setConfirmed] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const service = useMemo(
     () => SERVICES.find((s) => s.id === serviceId) || null,
@@ -114,6 +119,7 @@ export default function BookWashPage() {
 
   const back = () => {
     setConfirmed(false);
+    setErrorMsg(null);
     setStep((prev) => (prev === 1 ? 1 : ((prev - 1) as any)));
   };
 
@@ -125,8 +131,9 @@ export default function BookWashPage() {
     setCarMake("");
     setCarModel("");
     setPlate("");
-    setNotes("");
     setConfirmed(false);
+    setSaving(false);
+    setErrorMsg(null);
   };
 
   const stepState = (n: 1 | 2 | 3 | 4): "done" | "active" | "todo" => {
@@ -135,13 +142,70 @@ export default function BookWashPage() {
     return "todo";
   };
 
+  async function confirmBooking() {
+    setErrorMsg(null);
+
+    if (!service) {
+      setErrorMsg("Please select a service.");
+      return;
+    }
+    if (!date || !time) {
+      setErrorMsg("Please select date and time.");
+      return;
+    }
+    if (!carMake.trim() || !carModel.trim() || !plate.trim()) {
+      setErrorMsg("Please fill in vehicle info.");
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      const res = await fetch("/api/bookings", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include",
+  body: JSON.stringify({
+    serviceName: service.title,
+    price: service.price,
+    date,
+    time,
+    carModel: `${carMake} ${carModel}`.trim(),
+    plate,
+    bookingStatus: "upcoming",
+  }),
+});
+
+      // nije logiran
+      if (res.status === 401) {
+        router.push("/login?next=/book_wash");
+        return;
+      }
+
+      const json = await res.json();
+
+      if (!res.ok || !json?.ok) {
+        throw new Error(json?.error || "Booking failed");
+      }
+
+      setConfirmed(true);
+
+      // prebaci u profil gdje će vidit booking
+      router.push("/my_acc");
+      router.refresh();
+    } catch (e: any) {
+      console.error(e);
+      setErrorMsg(e?.message || "Booking failed");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <main className="bg-rose-50">
       <section className="mx-auto max-w-6xl px-4 py-14">
         {/* Header */}
         <div className="text-center">
-
-
           <h1 className="mt-6 text-5xl font-extrabold text-black">
             <span className="text-red-500">Booking System</span>
           </h1>
@@ -312,16 +376,6 @@ export default function BookWashPage() {
                     className="mt-3 w-full rounded-lg border border-gray-200 px-4 py-3 text-sm outline-none focus:border-red-300"
                   />
                 </div>
-
-                <div>
-                  <label className="text-sm font-bold text-black">Additional Notes (Optional)</label>
-                  <textarea
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Any special requests or concerns?"
-                    className="mt-3 min-h-[120px] w-full rounded-lg border border-gray-200 px-4 py-3 text-sm outline-none focus:border-red-300"
-                  />
-                </div>
               </div>
 
               <div className="mt-10 flex items-center justify-between">
@@ -383,25 +437,33 @@ export default function BookWashPage() {
                 </div>
               </div>
 
+              {errorMsg && (
+                <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+                  ❌ {errorMsg}
+                </div>
+              )}
+
               {confirmed && (
                 <div className="mt-6 rounded-xl border border-lime-200 bg-lime-50 p-4 text-sm text-lime-800">
-                  ✅ Booking confirmed (frontend demo). <button className="ml-2 underline" onClick={resetAll}>Create another</button>
+                  ✅ Booking confirmed. <button className="ml-2 underline" onClick={resetAll}>Create another</button>
                 </div>
               )}
 
               <div className="mt-10 flex items-center justify-between">
                 <button
                   onClick={back}
-                  className="inline-flex items-center gap-2 rounded-lg bg-gray-600 px-6 py-3 text-sm font-bold text-white hover:bg-gray-700"
+                  disabled={saving}
+                  className="inline-flex items-center gap-2 rounded-lg bg-gray-600 px-6 py-3 text-sm font-bold text-white hover:bg-gray-700 disabled:opacity-60"
                 >
                   ← Back
                 </button>
 
                 <button
-                  onClick={() => setConfirmed(true)}
-                  className="inline-flex items-center gap-2 rounded-lg bg-lime-600 px-6 py-3 text-sm font-bold text-white hover:bg-lime-700"
+                  onClick={confirmBooking}
+                  disabled={saving}
+                  className="inline-flex items-center gap-2 rounded-lg bg-lime-600 px-6 py-3 text-sm font-bold text-white hover:bg-lime-700 disabled:opacity-60"
                 >
-                  Confirm Booking <span>✓</span>
+                  {saving ? "Saving..." : "Confirm Booking"} <span>✓</span>
                 </button>
               </div>
             </div>
