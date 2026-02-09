@@ -87,6 +87,7 @@ export async function POST(req: Request) {
     const payload = {
       data: {
         ...body,
+        customer: me.id,
     
       },
     };
