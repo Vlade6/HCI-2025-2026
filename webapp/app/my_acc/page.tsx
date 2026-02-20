@@ -4,9 +4,11 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { STRAPI_URL, strapiMe } from "@/app/lib/strapiAuth";
 import { User, Calendar, Clock, Car, BadgeCheck } from "lucide-react";
+import CancelBookingButton from "@/app/_components/CancelBookingButton";
 
 type Booking = {
   id: number;
+  documentId: string;
   serviceName: string;
   price: number;
   bookingStatus: "upcoming" | "completed" | "cancelled";
@@ -36,7 +38,7 @@ const url =
 
  const data = (json?.data ?? []).map((x: any) => {
   const attrs = x.attributes ?? x;
-  return { id: x.id, ...attrs };
+  return { ...attrs, id: x.id, documentId: x.documentId };
 });
 
 return data as Booking[];
@@ -70,7 +72,7 @@ export default async function MyAccountPage() {
               // logout server-side (cookie clear)
               const c = await cookies();
               c.set("pitstop_jwt", "", { path: "/", maxAge: 0 });
-              redirect("/login");
+              redirect("/login?loggedOut=1");
             }}
           >
           <button type="submit" className="rounded-lg bg-gray-900 px-4 py-2 text-white">
@@ -126,33 +128,53 @@ export default async function MyAccountPage() {
           <div className="lg:col-span-2 bg-white rounded-2xl shadow p-6">
             <h2 className="text-xl font-semibold mb-6">Booking History</h2>
 
-            {upcoming.map((b) => (
-              <div key={b.id} className="border border-green-300 bg-green-50 rounded-xl p-5 mb-6">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-xs bg-green-500 text-white px-3 py-1 rounded-full">
-                    UPCOMING
-                  </span>
-                  <span className="text-xl font-bold text-red-600">€{b.price}</span>
-                </div>
+            
 
-                <h3 className="font-semibold mb-3">{b.serviceName}</h3>
+ {upcoming.map((b) => {
+  console.log("BOOKING:", b)
+  const today = new Date().toISOString().split("T")[0];
+  const isPast = b.date < today;
+  
+  return (
+    <div
+      key={b.id}
+      className="border border-green-300 bg-green-50 rounded-xl p-5 mb-6"
+    >
+      <div className="flex justify-between items-center mb-3">
+        <span className="text-xs bg-green-500 text-white px-3 py-1 rounded-full">
+          UPCOMING
+        </span>
+        <span className="text-xl font-bold text-red-600">
+          €{b.price}
+        </span>
+      </div>
+    
+      <h3 className="font-semibold mb-3">{b.serviceName}</h3>
 
-                <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 mb-4">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={16} /> {b.date}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock size={16} /> {b.time}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Car size={16} /> {b.carModel}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <BadgeCheck size={16} /> {b.plate}
-                  </div>
-                </div>
-              </div>
-            ))}
+      <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 mb-4">
+        <div className="flex items-center gap-2">
+          {b.date}
+        </div>
+        <div className="flex items-center gap-2">
+          {b.time}
+        </div>
+        <div className="flex items-center gap-2">
+          {b.carModel}
+        </div>
+        <div className="flex items-center gap-2">
+           {b.plate}
+        </div>
+      </div>
+
+      {!isPast && b.bookingStatus === "upcoming" && (
+        <div className="flex justify-end">
+          <CancelBookingButton bookingId={b.documentId} />
+        </div>
+      )}
+      
+    </div>
+  );
+})}
 
             {completed.map((b) => (
               <div key={b.id} className="border rounded-xl p-5 mb-4 bg-white">
@@ -162,7 +184,7 @@ export default async function MyAccountPage() {
                   </span>
                   <span className="text-lg font-semibold">€{b.price}</span>
                 </div>
-
+                  
                 <h3 className="font-semibold mb-3">{b.serviceName}</h3>
 
                 <div className="grid grid-cols-2 gap-3 text-sm text-gray-600">

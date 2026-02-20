@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export default function LoginClient() {
   const router = useRouter();
   const sp = useSearchParams();
   const next = sp.get("next") || "/my_acc";
+
+  useEffect(() => {
+    if (sp.get("loggedOut") === "1") {
+      router.refresh();
+      router.replace("/login");
+    }
+  }, [sp, router]);
 
   const [mode, setMode] = useState<"login" | "register">("login");
   const [username, setUsername] = useState("");

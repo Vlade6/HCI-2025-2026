@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Avatar from "@/app/_components/Avatar";
 
 export default function AboutPage() {
   return (
@@ -112,28 +113,14 @@ export default function AboutPage() {
 
 /* Components */
 
-function TeamCard({
-  name,
-  role,
-  desc,
-}: {
-  name: string;
-  role: string;
-  desc: string;
-}) {
+function TeamCard({ name, role, desc }: { name: string; role: string; desc: string }) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-lg">
-      <div className="flex h-52 items-center justify-center bg-gray-200">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300 text-gray-600 text-3xl">
-          👤
-        </div>
-      </div>
+    <div className="rounded-2xl bg-white p-8 shadow-md">
+      <Avatar name={name} size={80} />
 
-      <div className="bg-red-50 p-6">
-        <h3 className="text-lg font-bold text-black">{name}</h3>
-        <p className="mt-1 font-semibold text-red-500">{role}</p>
-        <p className="mt-3 text-sm text-gray-600">{desc}</p>
-      </div>
+      <h3 className="mt-5 text-xl font-extrabold text-gray-900">{name}</h3>
+      <p className="mt-1 font-semibold text-red-600">{role}</p>
+      <p className="mt-4 text-gray-600">{desc}</p>
     </div>
   );
 }

@@ -3,6 +3,11 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BookIcon } from "lucide-react";
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import TextField from "@mui/material/TextField";
 
 type Service = {
   id: string;
@@ -62,10 +67,10 @@ function StepDot({
   const isActive = state === "active";
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex w-[88px] flex-col items-center">
       <div
         className={[
-          "flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold",
+          "flex h-12 w-12 items-center justify-center rounded-full text-sm font-extrabold",
           isDone ? "bg-lime-500 text-white" : "",
           isActive ? "bg-red-500 text-white" : "",
           state === "todo" ? "bg-gray-300 text-gray-700" : "",
@@ -73,13 +78,21 @@ function StepDot({
       >
         {isDone ? "✓" : index}
       </div>
-      <div className="text-xs font-semibold text-gray-700">{label}</div>
+
+      {/* FIX: fiksna visina + centriranje + line-height */}
+      <div className="mt-3 h-10 text-center text-xs font-semibold leading-4 text-gray-700">
+        {label}
+      </div>
     </div>
   );
 }
 
 function StepLine({ active }: { active: boolean }) {
-  return <div className={`h-[3px] w-28 rounded-full ${active ? "bg-lime-500" : "bg-gray-300"}`} />;
+  return (
+    <div className="flex-1">
+      <div className={`h-[3px] w-full rounded-full ${active ? "bg-lime-500" : "bg-gray-300"}`} />
+    </div>
+  );
 }
 
 export default function BookWashPage() {
@@ -144,6 +157,21 @@ export default function BookWashPage() {
 
   async function confirmBooking() {
     setErrorMsg(null);
+
+    const today = new Date();
+    const selectedDate = new Date(date);
+
+    today.setHours(0,0,0,0);
+
+      if (selectedDate < today) {
+      setErrorMsg("You cannot book a date in the past.");
+      return;
+    }
+
+    if (!date || !time) {
+      setErrorMsg("Please select date and time.");
+      return;
+    }
 
     if (!service) {
       setErrorMsg("Please select a service.");
@@ -213,13 +241,12 @@ export default function BookWashPage() {
             Experience the complete booking flow. Takes less than 2 minutes!
           </p>
 
-          {/* Steps */}
-          <div className="mt-10 flex items-center justify-center gap-6">
+          <div className="mt-10 mx-auto flex max-w-3xl items-center justify-center gap-4">
             <StepDot index={1} label="Service" state={stepState(1)} />
             <StepLine active={step > 1} />
-            <StepDot index={2} label="Date & Time" state={stepState(2)} />
+            <StepDot index={2} label={"Date &\nTime"} state={stepState(2)} />
             <StepLine active={step > 2} />
-            <StepDot index={3} label="Vehicle Info" state={stepState(3)} />
+            <StepDot index={3} label={"Vehicle\nInfo"} state={stepState(3)} />
             <StepLine active={step > 3} />
             <StepDot index={4} label="Confirm" state={stepState(4)} />
           </div>
@@ -285,14 +312,27 @@ export default function BookWashPage() {
 
               <div className="mt-8 grid gap-8 md:grid-cols-2">
                 <div>
-                  <label className="text-sm font-bold text-black">Select Date</label>
-                  <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="mt-3 w-full rounded-lg border border-gray-200 px-4 py-3 text-sm outline-none focus:border-red-300"
-                  />
+                <label className="text-sm font-bold text-black">Select Date</label>
+
+                <div className="mt-3">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      value={date ? dayjs(date) : null}
+                      onChange={(val: Dayjs | null) => {
+                        if (!val) return;
+                        setDate(val.format("YYYY-MM-DD"));
+                      }}
+                      minDate={dayjs()} // blokira prošlost
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          size: "small",
+                        },
+                      }}
+                    />
+                  </LocalizationProvider>
                 </div>
+              </div>
 
                 <div>
                   <label className="text-sm font-bold text-black">Select Time Slot</label>

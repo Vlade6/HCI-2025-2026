@@ -1,3 +1,4 @@
+import ContactForm from "./ContactForm";
 import {
   FaMapMarkerAlt,
   FaPhoneAlt,
@@ -21,40 +22,15 @@ export default function ContactPage() {
       </section>
 
       {/* Main content */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
-        <div className="grid gap-10 md:grid-cols-2">
-          {/* Form */}
-          <div className="rounded-2xl bg-red-50 p-8 shadow-lg">
-            <h2 className="mb-6 text-2xl font-bold text-black">
-              Send Us a Message
-            </h2>
+    <section className="mx-auto max-w-6xl px-4 pb-20">
+      <div className="grid gap-10 md:grid-cols-2">
+        {/* Form */}
+        <div className="rounded-2xl bg-white p-8 shadow-lg">
+          <h2 className="mb-6 text-2xl font-bold text-black">
+            Send Us a Message
+          </h2>
 
-            <form className="space-y-5">
-              <Input label="Your Name" placeholder="John Doe" />
-              <Input label="Email Address" placeholder="john@example.com" />
-              <Input
-                label="Phone Number (Optional)"
-                placeholder="+385 9x 123 4567"
-              />
-
-              <div>
-                <label className="block text-sm font-medium text-black">
-                  Message
-                </label>
-                <textarea
-                  rows={5}
-                  placeholder="Tell us how we can help you..."
-                  className="mt-1 w-full rounded-lg border px-4 py-3 focus:border-red-500 focus:outline-none"
-                />
-              </div>
-
-              <button
-                type="button"
-                className="w-full rounded-lg bg-red-500 py-3 font-semibold text-white hover:bg-red-600"
-              >
-                Send Message →
-              </button>
-            </form>
+            <ContactForm />
           </div>
 
           {/* Info cards */}
@@ -88,11 +64,17 @@ export default function ContactPage() {
             />
 
             {/* Map placeholder */}
-            <div className="flex h-40 items-center justify-center rounded-2xl bg-gray-200 text-center text-gray-500">
-              Google Maps Integration
-              <br />
-              Available on full Contact page
-            </div>
+<div className="h-64 w-full overflow-hidden rounded-2xl shadow-md">
+  <iframe
+    src="https://www.google.com/maps?q=Ostavska+7C,+Split,+Croatia&output=embed"
+    width="100%"
+    height="100%"
+    style={{ border: 0 }}
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+  />
+</div>
           </div>
         </div>
 
