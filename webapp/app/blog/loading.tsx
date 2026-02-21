@@ -1,40 +1,45 @@
 export default function Loading() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-12">
-      {/* Header */}
-      <div className="text-center">
-        <div className="mx-auto h-12 w-72 rounded-lg bg-gray-200 animate-pulse" />
-        <div className="mx-auto mt-3 h-5 w-96 rounded bg-gray-200 animate-pulse" />
+    <div className="max-w-3xl mx-auto px-6 py-12 animate-pulse">
+      
+      {/* Back link */}
+      <div className="h-4 w-32 bg-gray-200 rounded mb-6" />
+
+      {/* Title */}
+      <div className="h-10 w-3/4 bg-gray-300 rounded mb-6" />
+
+      {/* Intro text */}
+      <div className="space-y-3 mb-10">
+        <div className="h-4 w-full bg-gray-200 rounded" />
+        <div className="h-4 w-5/6 bg-gray-200 rounded" />
       </div>
 
-      {/* Search bar */}
-      <div className="mt-10 rounded-2xl bg-white p-4 shadow-sm">
-        <div className="h-11 w-full rounded-xl bg-gray-200 animate-pulse" />
-        <div className="mt-3 h-4 w-24 rounded bg-gray-200 animate-pulse" />
+      {/* Section 1 */}
+      <div className="mb-8">
+        <div className="h-6 w-1/2 bg-gray-300 rounded mb-4" />
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-gray-200 rounded" />
+          <div className="h-4 w-4/5 bg-gray-200 rounded" />
+        </div>
       </div>
 
-      {/* Post cards */}
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <article
-            key={i}
-            className="rounded-2xl bg-white p-5 shadow-sm animate-pulse"
-          >
-            {/* Title */}
-            <div className="h-7 w-4/5 rounded bg-gray-200" />
-
-            {/* Excerpt lines */}
-            <div className="mt-2 space-y-2">
-              <div className="h-4 w-full rounded bg-gray-200" />
-              <div className="h-4 w-11/12 rounded bg-gray-200" />
-              <div className="h-4 w-2/3 rounded bg-gray-200" />
-            </div>
-
-            {/* Read more link */}
-            <div className="mt-4 h-5 w-24 rounded bg-gray-200" />
-          </article>
-        ))}
+      {/* Section 2 */}
+      <div className="mb-8">
+        <div className="h-6 w-1/2 bg-gray-300 rounded mb-4" />
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-gray-200 rounded" />
+          <div className="h-4 w-3/4 bg-gray-200 rounded" />
+        </div>
       </div>
-    </section>
+
+      {/* Section 3 */}
+      <div>
+        <div className="h-6 w-1/2 bg-gray-300 rounded mb-4" />
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-gray-200 rounded" />
+          <div className="h-4 w-4/5 bg-gray-200 rounded" />
+        </div>
+      </div>
+    </div>
   );
 }
